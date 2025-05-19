@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brain Tumor Detection</title>
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #2d3e50;
+            margin-bottom: 24px;
+        }
+        form {
+            background: #fff;
+            padding: 32px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="file"] {
+            margin-bottom: 18px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background: #4e73df;
+            color: #fff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        input[type="submit"]:hover {
+            background: #2e59d9;
+        }
+        .explanation {
+    background: #eaf0fb;
+    border-left: 5px solid #4e73df;
+    padding: 18px 28px;
+    margin-bottom: 32px;
+    border-radius: 8px;
+    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
+}
+.explanation h2 {
+    margin-top: 0;
+    color: #2d3e50;
+}
+.explanation p {
+    margin-bottom: 0;
+    color: #444;
+    font-size: 1.08rem;
+}
+    </style>
+</head>
+<body>
+    <div class="explanation">
+    <h2>What is a Brain Tumor?</h2>
+    <p>
+        A brain tumor is an abnormal growth of cells within the brain. Tumors can be benign (non-cancerous) or malignant (cancerous), and early detection is crucial for effective treatment. 
+        This web application uses artificial intelligence to help detect the presence of a brain tumor from MRI images. 
+        Please upload a brain MRI scan to get a prediction.
+    </p>
+</div>
+    <h1>Upload Brain MRI Image</h1>
+    <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <input type="submit" value="Predict">
+    </form>
+</body>
+</html>
