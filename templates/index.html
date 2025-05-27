@@ -4,78 +4,154 @@
     <title>Brain Tumor Detection</title>
     <style>
         body {
-            background: #f5f7fa;
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
             font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
         }
-        h1 {
+        .about-section {
+            background: #fff;
+            margin-top: 40px;
+            margin-bottom: 32px;
+            padding: 32px 40px;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            border-left: 8px solid #4e73df;
+        }
+        .about-section h1 {
+            color: #4e73df;
+            margin-bottom: 12px;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        .about-section p {
             color: #2d3e50;
-            margin-bottom: 24px;
+            font-size: 1.13rem;
+            margin-bottom: 0;
+            line-height: 1.7;
+        }
+        .about-section ul {
+            text-align: left;
+            margin: 18px auto 0 auto;
+            max-width: 600px;
+            color: #444;
+            font-size: 1.05rem;
+        }
+        .upload-container {
+            background: #fff;
+            padding: 36px 44px;
+            border-radius: 16px;
+            box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .upload-container h2 {
+            color: #2d3e50;
+            margin-bottom: 22px;
+            font-size: 1.5rem;
         }
         form {
-            background: #fff;
-            padding: 32px 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
             display: flex;
             flex-direction: column;
-            align-items: center;
+            width: 100%;
         }
-        input[type="file"] {
-            margin-bottom: 18px;
+        label {
+            color: #4e73df;
+            font-weight: 500;
+            margin-bottom: 4px;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        input[type="text"], input[type="number"], input[type="file"] {
+            margin-bottom: 14px;
+            padding: 10px;
+            border: 1px solid #cfd8dc;
+            border-radius: 6px;
             font-size: 16px;
+            background: #f5f7fa;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="file"]:focus {
+            border: 1.5px solid #4e73df;
+            outline: none;
         }
         input[type="submit"] {
             background: #4e73df;
             color: #fff;
             border: none;
-            padding: 12px 32px;
-            border-radius: 6px;
-            font-size: 16px;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            margin-top: 10px;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
         }
         input[type="submit"]:hover {
             background: #2e59d9;
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
         }
-        .explanation {
-    background: #eaf0fb;
-    border-left: 5px solid #4e73df;
-    padding: 18px 28px;
-    margin-bottom: 32px;
-    border-radius: 8px;
-    max-width: 500px;
-    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
-}
-.explanation h2 {
-    margin-top: 0;
-    color: #2d3e50;
-}
-.explanation p {
-    margin-bottom: 0;
-    color: #444;
-    font-size: 1.08rem;
-}
+        .history-btn {
+            display: inline-block;
+            margin-top: 22px;
+            background: #4e73df;
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+        }
+        .history-btn:hover {
+            background: #2e59d9;
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
+        }
+        @media (max-width: 800px) {
+            .about-section, .upload-container {
+                padding: 18px 8px;
+                max-width: 98vw;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="explanation">
-    <h2>What is a Brain Tumor?</h2>
-    <p>
-        A brain tumor is an abnormal growth of cells within the brain. Tumors can be benign (non-cancerous) or malignant (cancerous), and early detection is crucial for effective treatment. 
-        This web application uses artificial intelligence to help detect the presence of a brain tumor from MRI images. 
-        Please upload a brain MRI scan to get a prediction.
-    </p>
-</div>
-    <h1>Upload Brain MRI Image</h1>
-    <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <input type="submit" value="Predict">
-    </form>
+    <div class="about-section">
+        <h1>About Brain Tumor Detection</h1>
+        <p>
+            <b>Brain tumors</b> are abnormal growths of cells in the brain that can be benign (non-cancerous) or malignant (cancerous). Early detection is crucial for effective treatment and improved outcomes.
+            <br><br>
+            <b>This web application uses Artificial Intelligence to help doctors and patients detect the presence of a brain tumor from MRI images.</b>
+        </p>
+        <ul>
+            <li>Upload a brain MRI scan along with patient details.</li>
+            <li>Our AI model will analyze the image and predict the likelihood of a tumor.</li>
+            <li>All predictions are saved for future reference and can be reviewed in the history section.</li>
+        </ul>
+    </div>
+    <div class="upload-container">
+        <h2>Upload Brain MRI Image</h2>
+        <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" name="patient_name" placeholder="Patient Name" required>
+            <label for="patient_age">Patient Age:</label>
+            <input type="number" name="patient_age" placeholder="Patient Age" min="0" required>
+            <label for="file">MRI Image:</label>
+            <input type="file" name="file" required>
+            <input type="submit" value="Predict">
+        </form>
+        <a href="{{ url_for('history') }}" class="history-btn">Check Prediction History</a>
+    </div>
 </body>
 </html>

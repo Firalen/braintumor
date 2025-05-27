@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction History</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            margin-top: 40px;
+            padding: 32px 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
+            max-width: 900px;
+            width: 100%;
+        }
+        h1 {
+            color: #2d3e50;
+            margin-bottom: 28px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: center;
+        }
+        th {
+            background: #4e73df;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background: #f5f7fa;
+        }
+        tr:nth-child(odd) {
+            background: #eaf0fb;
+        }
+        td img {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.10);
+            max-width: 80px;
+            max-height: 80px;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #4e73df;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            margin-top: 10px;
+        }
+        .back-btn:hover {
+            background: #2e59d9;
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
+        }
+        @media (max-width: 1000px) {
+            .container {
+                padding: 16px 4px;
+            }
+            th, td {
+                font-size: 13px;
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction History</h1>
+        <table>
+            <tr>
+                <th>Patient Name</th>
+                <th>Age</th>
+                <th>Photo Name</th>
+                <th>Result</th>
+                <th>Confidence</th>
+                <th>Image</th>
+            </tr>
+            {% for row in records %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>
+                    <img src="{{ url_for('static', filename=row[5]) }}" alt="MRI Image">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('index') }}" class="back-btn">Back to Upload</a>
+    </div>
+</body>
+</html>

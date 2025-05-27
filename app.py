@@ -3,6 +3,8 @@ from keras.models import load_model
 from keras.preprocessing import image
 import numpy as np
 import os
+import csv
+
 
 app = Flask(__name__)
 model = load_model("braintumor.h5")  # Make sure this is a valid Keras .h5 model
@@ -14,38 +16,53 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def index():
     return render_template('index.html')
 
+import csv
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
         return redirect(request.url)
     file = request.files['file']
-    if file.filename == '':
+    patient_name = request.form.get('patient_name')
+    patient_age = request.form.get('patient_age')
+    if file.filename == '' or not patient_name or not patient_age:
         return redirect(request.url)
     if file:
-        # Ensure the upload folder exists
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filepath)
 
-        # Preprocess image
         img = image.load_img(filepath, target_size=(150, 150))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-        # Predict
         prediction = model.predict(img_array)[0][0]
         result = "Tumor Detected" if prediction > 0.5 else "No Tumor Detected"
         confidence = f"{prediction * 100:.2f}%" if prediction > 0.5 else f"{(1 - prediction) * 100:.2f}%"
-
-        # Pass only the relative path from 'static'
         image_path = f"uploads/{file.filename}"
+
+        # Save to history.csv
+        with open('history.csv', 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([patient_name, patient_age, file.filename, result, confidence, image_path])
 
         return render_template(
             'result.html',
             result=result,
             confidence=confidence,
-            image_path=image_path
+            image_path=image_path,
+            patient_name=patient_name,
+            patient_age=patient_age,
+            photo_name=file.filename
         )
 
+@app.route('/history')
+def history():
+    records = []
+    if os.path.exists('history.csv'):
+        with open('history.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            records = list(reader)
+    return render_template('history.html', records=records)
 if __name__ == "__main__":
     app.run(debug=True)
