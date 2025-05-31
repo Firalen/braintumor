@@ -43,87 +43,83 @@
             color: #444;
             font-size: 1.05rem;
         }
-        .upload-container {
-            background: #fff;
-            padding: 36px 44px;
-            border-radius: 16px;
-            box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 400px;
-            width: 100%;
-        }
-        .upload-container h2 {
-            color: #2d3e50;
-            margin-bottom: 22px;
-            font-size: 1.5rem;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        label {
-            color: #4e73df;
-            font-weight: 500;
-            margin-bottom: 4px;
-            margin-top: 10px;
-            font-size: 1rem;
-        }
-        input[type="text"], input[type="number"], input[type="file"] {
-            margin-bottom: 14px;
-            padding: 10px;
-            border: 1px solid #cfd8dc;
-            border-radius: 6px;
-            font-size: 16px;
-            background: #f5f7fa;
-            transition: border 0.2s;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, input[type="file"]:focus {
-            border: 1.5px solid #4e73df;
-            outline: none;
-        }
-        input[type="submit"] {
+        
+        .main-btn {
             background: #4e73df;
             color: #fff;
-            border: none;
-            padding: 12px 0;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
-        }
-        input[type="submit"]:hover {
-            background: #2e59d9;
-            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
-        }
-        .history-btn {
-            display: inline-block;
-            margin-top: 22px;
-            background: #4e73df;
-            color: #fff;
-            padding: 12px 32px;
-            border-radius: 8px;
+            padding: 16px 36px;
+            border-radius: 10px;
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
             transition: background 0.2s, box-shadow 0.2s;
             box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
         }
-        .history-btn:hover {
+        .main-btn:hover {
             background: #2e59d9;
             box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
         }
         @media (max-width: 800px) {
-            .about-section, .upload-container {
+            .about-section {
                 padding: 18px 8px;
                 max-width: 98vw;
             }
+            .action-buttons {
+                flex-direction: column;
+                gap: 16px;
+            }
         }
+
+        button {
+  align-items: center;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #ffffff;
+  display: flex;
+  font-size: 18px;
+  justify-content:center;
+  column-gap: 5;
+  display:flex;
+   gap: 24px;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 140px;
+  padding: 3px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:active,
+button:hover {
+  outline: 0;
+}
+
+button span {
+  background-color: rgb(5, 6, 45);
+  padding: 16px 24px;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  transition: 300ms;
+}
+
+button:hover span {
+  background: none;
+}
+
+button:active {
+  transform: scale(0.9);
+}
     </style>
 </head>
 <body>
@@ -139,19 +135,14 @@
             <li>Our AI model will analyze the image and predict the likelihood of a tumor.</li>
             <li>All predictions are saved for future reference and can be reviewed in the history section.</li>
         </ul>
-    </div>
-    <div class="upload-container">
-        <h2>Upload Brain MRI Image</h2>
-        <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
-            <label for="patient_name">Patient Name:</label>
-            <input type="text" name="patient_name" placeholder="Patient Name" required>
-            <label for="patient_age">Patient Age:</label>
-            <input type="number" name="patient_age" placeholder="Patient Age" min="0" required>
-            <label for="file">MRI Image:</label>
-            <input type="file" name="file" required>
-            <input type="submit" value="Predict">
-        </form>
-        <a href="{{ url_for('history') }}" class="history-btn">Check Prediction History</a>
+       <div class="button">
+    <form action="{{ url_for('history') }}" method="get" style="margin:0;">
+        <button type="submit"><span>Check Prediction History</span></button>
+    </form>
+    <form action="{{ url_for('form_page') }}" method="get" style="margin:0;">
+        <button type="submit"><span>Predict from MRI Image</span></button>
+    </form>
+</div>
     </div>
 </body>
 </html>

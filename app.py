@@ -12,6 +12,9 @@ model = load_model("braintumor.h5")  # Make sure this is a valid Keras .h5 model
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Define your class names at the top of your file
+class_names = ['Glioma', 'Meningioma', 'Pituitary', 'No Tumor']
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -36,9 +39,11 @@ def predict():
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-        prediction = model.predict(img_array)[0][0]
-        result = "Tumor Detected" if prediction > 0.5 else "No Tumor Detected"
-        confidence = f"{prediction * 100:.2f}%" if prediction > 0.5 else f"{(1 - prediction) * 100:.2f}%"
+        # Get prediction probabilities for each class
+        predictions = model.predict(img_array)[0]
+        predicted_index = np.argmax(predictions)
+        result = class_names[predicted_index]
+        confidence = f"{predictions[predicted_index] * 100:.2f}%"
         image_path = f"uploads/{file.filename}"
 
         # Save to history.csv
@@ -64,5 +69,27 @@ def history():
             reader = csv.reader(csvfile)
             records = list(reader)
     return render_template('history.html', records=records)
+@app.route('/delete_history', methods=['POST'])
+def delete_history():
+    import csv, os
+    row_id = int(request.form['row_id'])
+    records = []
+    if os.path.exists('history.csv'):
+        with open('history.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            records = list(reader)
+        if 0 <= row_id < len(records):
+            # Optionally delete the image file as well
+            image_path = os.path.join('static', records[row_id][5])
+            if os.path.exists(image_path):
+                os.remove(image_path)
+            records.pop(row_id)
+        with open('history.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows(records)
+    return redirect(url_for('history'))
+@app.route('/form')
+def form_page():
+    return render_template('form.html')
 if __name__ == "__main__":
     app.run(debug=True)
