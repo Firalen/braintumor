@@ -1,134 +1,382 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Prediction History</title>
+    <title>Prediction History - Brain Tumor Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --info: #0ea5e9;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
+            padding: 2rem;
+            color: var(--light);
         }
+
         .container {
-            background: #fff;
-            margin-top: 40px;
-            padding: 32px 40px;
-            border-radius: 16px;
-            box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
-            max-width: 900px;
+            max-width: 1200px;
             width: 100%;
+            margin: 0 auto;
         }
-        h1 {
-            color: #2d3e50;
-            margin-bottom: 28px;
+
+        .header {
             text-align: center;
+            margin-bottom: 3rem;
         }
-        table {
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 18px;
+            border-collapse: separate;
+            border-spacing: 0 1rem;
         }
-        th, td {
-            padding: 12px 10px;
-            text-align: center;
+
+        .history-table th {
+            color: #94a3b8;
+            font-weight: 500;
+            text-align: left;
+            padding: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        th {
-            background: #4e73df;
-            color: #fff;
-            font-size: 17px;
+
+        .history-table td {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            color: white;
+        }
+
+        .history-table tr td:first-child {
+            border-top-left-radius: 0.75rem;
+            border-bottom-left-radius: 0.75rem;
+        }
+
+        .history-table tr td:last-child {
+            border-top-right-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #60a5fa;
             font-weight: 600;
         }
-        tr:nth-child(even) {
-            background: #f5f7fa;
+
+        .patient-details {
+            display: flex;
+            flex-direction: column;
         }
-        tr:nth-child(odd) {
-            background: #eaf0fb;
-        }
-        td img {
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.10);
-            max-width: 80px;
-            max-height: 80px;
-        }
-        .back-btn {
-            display: inline-block;
-            background: #4e73df;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 16px;
+
+        .patient-name {
             font-weight: 500;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
-            margin-top: 10px;
+            color: white;
         }
-        .back-btn:hover {
-            background: #2e59d9;
-            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
+
+        .patient-age {
+            color: #94a3b8;
+            font-size: 0.9rem;
         }
-        .delete-btn {
-            background: #e74c3c;
-            color: #fff;
+
+        .scan-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+        }
+
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .result-badge.tumor {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .result-badge.no-tumor {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .confidence-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 3px;
+        }
+
+        .date-time {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .action-btn {
+            background: none;
             border: none;
-            padding: 6px 14px;
-            border-radius: 5px;
+            color: #ef4444;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 1px 4px rgba(44, 62, 80, 0.08);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
         }
-        .delete-btn:hover {
-            background: #c0392b;
+
+        .action-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
         }
-        @media (max-width: 1000px) {
-            .container {
-                padding: 16px 4px;
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #4b5563 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 116, 139, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
             }
-            th, td {
-                font-size: 13px;
-                padding: 8px 4px;
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .history-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .history-table th,
+            .history-table td {
+                padding: 0.75rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Prediction History</h1>
-        <table>
-            <tr>
-                <th>Patient Name</th>
-                <th>Age</th>
-                <th>Photo Name</th>
-                <th>Result</th>
-                <th>Confidence</th>
-                <th>Image</th>
-                <th>Delete</th>
-            </tr>
-            {% for row in records %}
-            <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td>
-                    <img src="{{ url_for('static', filename=row[5]) }}" alt="MRI Image">
-                </td>
-                <td>
-                    <form action="{{ url_for('delete_history') }}" method="post" style="margin:0;">
-                        <input type="hidden" name="row_id" value="{{ loop.index0 }}">
-                        <button type="submit" class="delete-btn">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <a href="{{ url_for('index') }}" class="back-btn">Back to Upload</a>
+        <div class="header">
+            <h1>Prediction History</h1>
+            <p>View all previous MRI scan analyses</p>
+        </div>
+
+        <div class="card">
+            {% if records %}
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Scan</th>
+                            <th>Result</th>
+                            <th>Confidence</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>
+                                    <div class="patient-info">
+                                        <div class="patient-avatar">
+                                            {{ record[0][0]|upper }}
+                                        </div>
+                                        <div class="patient-details">
+                                            <div class="patient-name">{{ record[0] }}</div>
+                                            <div class="patient-age">{{ record[1] }} years</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <img src="{{ url_for('static', filename=record[5]) }}" alt="MRI Scan" class="scan-preview">
+                                </td>
+                                <td>
+                                    <div class="result-badge {{ 'tumor' if record[3] == 'Tumor' else 'no-tumor' }}">
+                                        <i class="fas {{ 'fa-exclamation-circle' if record[3] == 'Tumor' else 'fa-check-circle' }}"></i>
+                                        {{ record[3] }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-fill" style="width: {{ record[4] }}"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-time">{{ record[2] }}</div>
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('delete_history') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="row_id" value="{{ loop.index0 }}">
+                                        <button type="submit" class="action-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="empty-text">No prediction history available</div>
+                    <a href="{{ url_for('form_page') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Start New Analysis
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            <i class="fas fa-home"></i>
+            Back to Home
+        </a>
     </div>
 </body>
 </html>

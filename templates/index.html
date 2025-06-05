@@ -2,147 +2,272 @@
 <html>
 <head>
     <title>Brain Tumor Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            font-family: 'Segoe UI', Arial, sans-serif;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --info: #0ea5e9;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 2rem;
+            color: var(--light);
         }
-        .about-section {
-            background: #fff;
-            margin-top: 40px;
-            margin-bottom: 32px;
-            padding: 32px 40px;
-            border-radius: 18px;
-            box-shadow: 0 6px 32px rgba(44, 62, 80, 0.12);
-            max-width: 700px;
+
+        .container {
+            max-width: 1200px;
             width: 100%;
+            margin: 0 auto;
+        }
+
+        .header {
             text-align: center;
-            border-left: 8px solid #4e73df;
+            margin-bottom: 4rem;
+            position: relative;
         }
-        .about-section h1 {
-            color: #4e73df;
-            margin-bottom: 12px;
-            font-size: 2.2rem;
-            letter-spacing: 1px;
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .about-section p {
-            color: #2d3e50;
-            font-size: 1.13rem;
-            margin-bottom: 0;
-            line-height: 1.7;
-        }
-        .about-section ul {
-            text-align: left;
-            margin: 18px auto 0 auto;
+
+        .header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
             max-width: 600px;
-            color: #444;
-            font-size: 1.05rem;
+            margin: 0 auto;
+            line-height: 1.6;
         }
-        
-        .main-btn {
-            background: #4e73df;
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 18px;
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .about-section p {
+            color: #94a3b8;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 1rem;
             font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
         }
-        .main-btn:hover {
-            background: #2e59d9;
-            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.16);
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
         }
-        @media (max-width: 800px) {
-            .about-section {
-                padding: 18px 8px;
-                max-width: 98vw;
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
             }
-            .action-buttons {
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .button-group {
                 flex-direction: column;
-                gap: 16px;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
             }
         }
-
-        button {
-  align-items: center;
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-  border: 0;
-  border-radius: 8px;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-  box-sizing: border-box;
-  color: #ffffff;
-  display: flex;
-  font-size: 18px;
-  justify-content:center;
-  column-gap: 5;
-  display:flex;
-   gap: 24px;
-  line-height: 1em;
-  max-width: 100%;
-  min-width: 140px;
-  padding: 3px;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-button:active,
-button:hover {
-  outline: 0;
-}
-
-button span {
-  background-color: rgb(5, 6, 45);
-  padding: 16px 24px;
-  border-radius: 6px;
-  width: 100%;
-  height: 100%;
-  transition: 300ms;
-}
-
-button:hover span {
-  background: none;
-}
-
-button:active {
-  transform: scale(0.9);
-}
     </style>
 </head>
 <body>
-    <div class="about-section">
-        <h1>About Brain Tumor Detection</h1>
-        <p>
-            <b>Brain tumors</b> are abnormal growths of cells in the brain that can be benign (non-cancerous) or malignant (cancerous). Early detection is crucial for effective treatment and improved outcomes.
-            <br><br>
-            <b>This web application uses Artificial Intelligence to help doctors and patients detect the presence of a brain tumor from MRI images.</b>
-        </p>
-        <ul>
-            <li>Upload a brain MRI scan along with patient details.</li>
-            <li>Our AI model will analyze the image and predict the likelihood of a tumor.</li>
-            <li>All predictions are saved for future reference and can be reviewed in the history section.</li>
-        </ul>
-       <div class="button">
-    <form action="{{ url_for('history') }}" method="get" style="margin:0;">
-        <button type="submit"><span>Check Prediction History</span></button>
-    </form>
-    <form action="{{ url_for('form_page') }}" method="get" style="margin:0;">
-        <button type="submit"><span>Predict from MRI Image</span></button>
-    </form>
-</div>
+    <div class="container">
+        <div class="header">
+            <h1>Brain Tumor Detection</h1>
+            <p>Advanced AI-powered analysis for early detection and accurate diagnosis of brain tumors</p>
+        </div>
+
+        <div class="card">
+            <div class="about-section">
+                <h2>Welcome to Our Platform</h2>
+                <p>Our state-of-the-art AI system provides accurate and rapid analysis of brain MRI scans, helping medical professionals make informed decisions about patient care. Early detection is crucial in the treatment of brain tumors, and our technology is here to assist in this critical process.</p>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Advanced machine learning algorithms for precise tumor detection</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Rapid Results</h3>
+                    <p>Get instant analysis results within seconds</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>History Tracking</h3>
+                    <p>Maintain a complete record of all analyses</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="{{ url_for('form_page') }}" class="btn btn-primary">
+                    <i class="fas fa-upload"></i>
+                    Upload MRI Scan
+                </a>
+                <a href="{{ url_for('history') }}" class="btn btn-secondary">
+                    <i class="fas fa-history"></i>
+                    View History
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
